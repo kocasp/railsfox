@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  departure_time: 2015-10-28 18:06:51
+  arrival_time: 2015-10-28 18:06:51
+  connection_id: 1
+
+two:
+  departure_time: 2015-10-28 18:06:51
+  arrival_time: 2015-10-28 18:06:51
+  connection_id: 1
