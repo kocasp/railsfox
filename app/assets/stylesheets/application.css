@@ -11,5 +11,39 @@
  * file per style scope.
  *
  *= require_tree .
+ *= require bootstrap
  *= require_self
  */
+.inline-select{
+	display: inline
+}
+.inline-select .connection-dropdown{
+	float: left;
+	position: relative;
+  	border-radius: 25px;
+  	margin-bottom: 10px;
+
+}
+.navbar-brand.page-scroll{
+	width:230px;
+	display: inline;
+}
+.navbar-brand.page-scroll img{
+	float: left;
+}
+.header-content .highlight{
+	color: #ef8d00;
+}
+
+.will_paginate_courses{
+	text-align: center;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.table-hover.courses > tbody > tr:hover{
+	background-color: #3C3C3C;
+}
+.label-cheapest{
+	background-color: #EF8D00;
+}

@@ -9,4 +9,16 @@ class Connection < ActiveRecord::Base
 		end_station = Station.find_by_name(ending)
 		Connection.where(station: start_station, connected_station: end_station).first
 	end
+
+	def start_station_name
+		station.name
+	end
+
+	def end_station_name
+		connected_station.name
+	end
+
+	def name
+		"#{start_station_name} -> #{end_station_name}"
+	end
 end

@@ -10,7 +10,16 @@ class ConnectionsController < ApplicationController
   # # GET /stations/1
   # # GET /stations/1.json
   def index
+    if params[:connection].present?
+      redirect_to connection_path(params[:connection])
+      return
+    end
     @connections = Connection.all
+  end
+
+  def show
+    @courses = Course.where(connection: @connection).paginate(page: params[:page], :per_page => 20)
+    @cheapest_price = Course.where(connection: @connection).minimum(:price)
   end
 
   # # GET /stations/new
