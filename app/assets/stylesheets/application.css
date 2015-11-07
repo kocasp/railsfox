@@ -37,8 +37,17 @@
 
 .will_paginate_courses{
 	text-align: center;
-	margin-top: 10px;
-	margin-bottom: 10px;
+}
+.will_paginate_courses .pagination{
+	margin-bottom: 3px;
+	margin-top: 6px;
+}
+.will_paginate_courses .pagination .active span{
+	background-color: #EF8D00;
+	border-color: #EF8D00;
+}
+.will_paginate_courses li a{
+	color: #222222;
 }
 
 .table-hover.courses > tbody > tr:hover{
@@ -46,4 +55,22 @@
 }
 .label-cheapest{
 	background-color: #EF8D00;
+}
+.table-day{
+	text-align: center;
+	color: #ef8d00;
+}
+.table-day .day-name{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+.table-time{
+	font-size: 20px;
+}
+.table-date{
+	font-size: 10px;
+}
+.table-price{
+	font-size: 25px;
 }
