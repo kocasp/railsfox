@@ -19,7 +19,7 @@ class Crowler
 
 	def setup
 		Capybara.register_driver :poltergeist do |app|
-		  Capybara::Poltergeist::Driver.new(app, js_errors: false)
+		  Capybara::Poltergeist::Driver.new(app, js_errors: false, timeout: 120)
 		end
 		Capybara.default_driver = :poltergeist
 		@browser = Capybara.current_session
@@ -43,6 +43,7 @@ class Crowler
 	def iterate_courses
 		@browser.all(".train_main_content_box li", :visible=>false).each do |c|
 			#check if connection is INTERCITY PREMIUM. premium connections have orange border caused by 'ramka_eip' class
+			puts "EIP course: #{c.first(".ramka_eip").present?}"
 			unless c.first(".ramka_eip").nil?
 				route = c.first("div", :visible=>false)[:id]
 				puts " processing EIP #{route} ..."

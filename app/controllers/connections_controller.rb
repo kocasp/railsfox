@@ -18,7 +18,7 @@ class ConnectionsController < ApplicationController
   end
 
   def show
-    @courses = Course.where(connection: @connection).paginate(page: params[:page], :per_page => 20)
+    @courses = Course.where(connection: @connection).order(:departure_time).paginate(page: params[:page], :per_page => 20)
     @cheapest_price = Course.where(connection: @connection).minimum(:price)
   end
 

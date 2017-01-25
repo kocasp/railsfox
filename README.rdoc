@@ -15,3 +15,6 @@ There are `Connection`, `Course` and `Station` models.
 
 ## Rake
 Webcrowl is perform by raketask `rake update_courses` defined in lib/tasks/update_courses.rake
+
+## Custom commands
+To remove and re-crawl data for particular day run f.e `Action::Crawl::Intercity.new(Date.new(2017,1,31), Date.new(2017,1,31), Connection.first).execute`
