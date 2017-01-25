@@ -1,28 +1,11 @@
-== README
+## TODO
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* remove connection_id from station
+* add basic tests
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+# Docs
+## Models
+There are `Connection`, `Course` and `Station` models.
+`Station` is a station having a :name.
+`Connection` belongs to station and connected_station which are start and end points of the connection. Both are `Station` class
+`Course` is a course of a train on a particular connection. It has :departure_time and :arrival_time

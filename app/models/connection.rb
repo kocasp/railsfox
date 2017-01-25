@@ -1,8 +1,10 @@
 class Connection < ActiveRecord::Base
 	belongs_to :station
 	belongs_to :connected_station, :class_name => "Station"
-	has_many :courses	
+	has_many :courses	, dependent: :destroy
 
+  alias_attribute :start, :station
+  alias_attribute :end, :connected_station
 
 	def self.find_by_station_names(starting, ending)
 		start_station = Station.find_by_name(starting)
