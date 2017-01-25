@@ -36,7 +36,6 @@ gem 'poltergeist'
 gem 'concurrent-ruby'
 gem 'will_paginate-bootstrap'
 
-
 # Add this if you're using rvm
 # gem 'capistrano-rvm', github: "capistrano/rvm"
 #

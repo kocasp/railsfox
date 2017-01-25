@@ -46,8 +46,10 @@
                         <span class="table-price">
                             <% if c.price==@cheapest_price %>
                                 <span style="color:#EF8D00"><b><%= c.price %>zł </b></span>  <span class="label label-cheapest"> Najtaniej!</span>
-                            <% else %>
+                            <% elsif c.price.present? %>
                                 <%= c.price %>zł
+                            <% else %>
+                                brak
                             <% end %>
                         </span>
                     </td>

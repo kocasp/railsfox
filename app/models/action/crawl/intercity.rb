@@ -1,7 +1,7 @@
 module Action
   module Crawl
     class Intercity
-    	
+
 		def initialize (start_date, end_date, connection)
 			@start_date = start_date
 			@end_date = end_date
@@ -27,7 +27,8 @@ module Action
 		def load_new_courses
 			(@start_date..@end_date).each do |date|
 				crowler = ::Crowler.new(date, @connection)
-				@new_courses.concat crowler.perform_crawl
+				results = crowler.perform_crawl
+				@new_courses.concat results
 			end
 		end
 
