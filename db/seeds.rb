@@ -6,6 +6,10 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+# Station.delete_all
+# Connection.delete_all
+# Course.delete_all
+
 krakow = Station.create(name: "Kraków Główny")
 warszawa = Station.create(name: "Warszawa Centralna")
 krakow_warszawa = Connection.create(station: krakow, connected_station: warszawa)
