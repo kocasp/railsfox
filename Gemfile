@@ -33,9 +33,13 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0'
 gem 'capybara'
+gem 'selenium-webdriver'
 gem 'poltergeist'
 gem 'concurrent-ruby'
 gem 'will_paginate-bootstrap'
+gem 'sidekiq'
+gem 'sidekiq_monitor'
+gem 'sinatra'
 
 # Add this if you're using rvm
 # gem 'capistrano-rvm', github: "capistrano/rvm"

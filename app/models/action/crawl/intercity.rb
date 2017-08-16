@@ -27,6 +27,7 @@ module Action
 		def load_new_courses
 			(@start_date..@end_date).each do |date|
 				crowler = ::Crowler.new(date, @connection)
+				p "performing Crawl from lib/crowler.rb"
 				results = crowler.perform_crawl
 				@new_courses.concat results
 			end

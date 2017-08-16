@@ -5,9 +5,9 @@ task :update_courses, [:days] => :environment do |t, args|
 
 	# set number of days to crawl since today
 	if args[:days].present?
-		no_days = args[:days].to_i.days
+		no_days = args[:days].to_i
 	else
-		no_days = 30.days
+		no_days = 7
 	end
 
 	#remove all past courses
@@ -18,7 +18,9 @@ task :update_courses, [:days] => :environment do |t, args|
 	p "Updating courses for next #{no_days} days..."
 	Connection.all.each	do |connection|
 		p "Starting crawl for course from #{connection.station.name} to #{connection.connected_station.name}"
-		Action::Crawl::Intercity.new(DateTime.now, DateTime.now+no_days, connection).execute
+		p "Adding crawl to background job ..."
+		ConnectionWorker.perform_async(no_days, connection.id)
+		# Action::Crawl::Intercity.new(DateTime.now, DateTime.now+no_days.days, connection).execute
 	end
 
 	p "Courses updated!"

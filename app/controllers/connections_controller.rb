@@ -2,6 +2,7 @@ class ConnectionsController < ApplicationController
   before_action :set_connection, only: [:show]
 
   def index
+    ConnectionWorker.perform_async(DateTime.now ,DateTime.now+4.days, Connection.first)
     if params[:connection].present?
       redirect_to connection_path(params[:connection])
       return

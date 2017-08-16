@@ -11,15 +11,18 @@ class Crowler
 	end
 
 	def perform_crawl
+		p "setup ..."
 		setup
+		p "enter connection page ..."
 		enter_connection_page
+		p "iterate courses ..."
 		iterate_courses
 		@results
 	end
 
 	def setup
 		Capybara.register_driver :poltergeist do |app|
-		  Capybara::Poltergeist::Driver.new(app, js_errors: false, timeout: 120)
+		  Capybara::Poltergeist::Driver.new(app, js_errors: false, timeout: 120, phantomjs_options: ['--load-images=no'])
 		end
 		Capybara.default_driver = :poltergeist
 		@browser = Capybara.current_session
@@ -27,7 +30,9 @@ class Crowler
 	end
 
 	def enter_connection_page
+		p "visit page ..."
 		@browser.visit @start_url
+		p "fill in page ..."
 		@browser.fill_in('seek[stname][0]', :with => @start_station_name)
 		@browser.find("a[title='#{@start_station_name}']").click
 		@browser.fill_in('seek[stname][1]', :with => @end_station_name)
@@ -68,6 +73,11 @@ class Crowler
 
 						#capybara click couldnt help so JS click is triggered
 						@browser.execute_script("$('##{route} .cena_klasa_2').click()")
+						while price.text == "Sprawdź cenę od w klasie 2"
+							@browser.execute_script("$('##{route} .cena_klasa_2').click()")
+							sleep(2)
+						end
+
 						while price.text.empty? do
 							#binding.pry
 							price = c.first(".cena_klasa_2", :visible=>false)
@@ -92,7 +102,9 @@ class Crowler
 
 	def parse_price(price)
 		return nil if price.text == "Brak możliwości sprawdzenia"
-		price.text.split(/\W+/)[5].to_f
+		ticket_price = price.text.split(/\W+/)[5].to_f
+		binding.pry if ticket_price < 10
+		ticket_price
 	end
 
 end

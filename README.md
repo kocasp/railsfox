@@ -1,8 +1,8 @@
 ## TODO
-
+* make poltergeist work more asynchronous (avoid sleep(7))
 * remove connection_id from station
 * add basic tests
--- random webpage connection crowl
+-- random webpage connection crawl
 * capybara timeout error catching from crowler
 * dont remove old courses before saving new ones
 
@@ -21,3 +21,8 @@ To remove and re-crawl data for particular day run f.e `Action::Crawl::Intercity
 
 #Ngrok
 If there is ngrok installed please run `./ngrok http -subdomain=railsfox 3000` from ngrok folder to test the API responses
+
+# Crawler takes approximately 15mins to crawl through one connection
+
+# to perform background job you must have Redis installed and run `redis-server` as well run `bundle exec sidekiq`
+# to clear all Sidekiq jobs and remaining tasks do the `Sidekiq.redis { |conn| conn.flushdb }` from the console
