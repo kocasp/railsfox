@@ -44,9 +44,9 @@ class Crowler
 		sleep(7)
 		@courses_found = @browser.all(".train_main_content_box li", :visible=>false).count
 
-		raise "BLAD. Znaleziono 0 polaczen" if @courses_found == 0
+		# binding.pry if @courses_found == 0
 
-		puts "	znaleziono #{@no_courses_found} połączeń PKP"
+		puts "	znaleziono #{@courses_found} połączeń PKP"
 	end
 
 	def iterate_courses
