@@ -18,3 +18,6 @@ Webcrowl is perform by raketask `rake update_courses` defined in lib/tasks/updat
 
 ## Custom commands
 To remove and re-crawl data for particular day run f.e `Action::Crawl::Intercity.new(Date.new(2017,1,31), Date.new(2017,1,31), Connection.first).execute`
+
+#Ngrok
+If there is ngrok installed please run `./ngrok http -subdomain=railsfox 3000` from ngrok folder to test the API responses

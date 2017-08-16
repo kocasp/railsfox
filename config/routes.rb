@@ -2,7 +2,8 @@ Rails.application.routes.draw do
 
   namespace :api, :defaults => {:format => :json} do
     namespace :v1 do
-      resources :connections, only: [:index]
+      match '*any' => 'api/v1/application#options', :via => [:options]
+      resources :connections, only: [:index, :show]
       resources :stations, only: [:index]
     end
   end
