@@ -2,8 +2,6 @@ Rails.application.routes.draw do
 
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
-  Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
-  Sidekiq::Web.use(::Rack::Protection, { use: :authenticity_token, logging: true, message: "Didn't work!" })
 
   namespace :api, :defaults => {:format => :json} do
     namespace :v1 do
