@@ -18,7 +18,8 @@ WARN: ArgumentError: wrong number of arguments (0 for 2)
 and many more...
 Need to investigate this
 
-Maybe running every crawl in different Capybara session will help ...
+Maybe running every crawl in different Capybara session/browser will help ...
+!!!!Different ports seem to work!!!
 
 # Docs
 ## Models
