@@ -42,7 +42,11 @@ class Crowler
 		@browser.fill_in('seek[date]', :with => travel_date)
 		@browser.click_on 'Szukaj'
 		sleep(7)
-		puts "	znaleziono #{@browser.all(".train_main_content_box li", :visible=>false).count} połączeń PKP"
+		@courses_found = @browser.all(".train_main_content_box li", :visible=>false).count
+
+		raise "BLAD. Znaleziono 0 polaczen" if @courses_found == 0
+
+		puts "	znaleziono #{@no_courses_found} połączeń PKP"
 	end
 
 	def iterate_courses
@@ -103,7 +107,7 @@ class Crowler
 	def parse_price(price)
 		return nil if price.text == "Brak możliwości sprawdzenia"
 		ticket_price = price.text.split(/\W+/)[5].to_f
-		binding.pry if ticket_price < 10
+		raise "price suspiciously low" if ticket_price < 10
 		ticket_price
 	end
 

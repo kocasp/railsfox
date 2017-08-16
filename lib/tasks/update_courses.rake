@@ -18,7 +18,10 @@ task :update_courses, [:days] => :environment do |t, args|
 	p "Updating courses for next #{no_days} days..."
 	Connection.all.each	do |connection|
 		p "Starting crawl for course from #{connection.station.name} to #{connection.connected_station.name}"
-		p "Adding crawl to background job ..."
+
+		# p "Clearing sidekiq jobs..."
+		# Sidekiq.redis { |conn| conn.flushdb }
+		p "Adding crawl to background sidekiq job ..."
 		ConnectionWorker.perform_async(no_days, connection.id)
 		# Action::Crawl::Intercity.new(DateTime.now, DateTime.now+no_days.days, connection).execute
 	end
