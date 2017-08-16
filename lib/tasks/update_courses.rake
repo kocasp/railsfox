@@ -15,7 +15,7 @@ task :update_courses, [:days] => :environment do |t, args|
 	Course.where(["departure_time < ?", DateTime.now]).destroy_all
 
 	# perform crowl
-	p "Updating courses for next #{args[:days]} days..."
+	p "Updating courses for next #{no_days} days..."
 	Connection.all.each	do |connection|
 		p "Starting crawl for course from #{connection.station.name} to #{connection.connected_station.name}"
 		Action::Crawl::Intercity.new(DateTime.now, DateTime.now+no_days, connection).execute
