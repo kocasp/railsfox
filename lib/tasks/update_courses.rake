@@ -7,7 +7,7 @@ task :update_courses, [:days] => :environment do |t, args|
 	if args[:days].present?
 		no_days = args[:days].to_i
 	else
-		no_days = 7
+		no_days = 30
 	end
 
 	#remove all past courses
@@ -25,7 +25,7 @@ task :update_courses, [:days] => :environment do |t, args|
 		# p "Adding crawl to background sidekiq job ..."
 		# ConnectionWorker.perform_async(no_days, connection.id)
 		Action::Crawl::Intercity.new(DateTime.now+1.day, DateTime.now+no_days.days, connection).execute
-		ConnectionCrawlMailer.confirm_crawl(connection).deliver_now
+		# ConnectionCrawlMailer.confirm_crawl(connection).deliver_now
 	end
 	stop_time =  DateTime.now
 	p "Courses updated! Started: #{start_time}, finished: #{stop_time}"
