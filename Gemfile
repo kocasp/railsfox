@@ -1,20 +1,15 @@
 source 'https://rubygems.org'
-ruby '2.0.0'
-
-gem 'capistrano', '~> 3.1.0'
-gem 'capistrano-bundler', '~> 1.1.2'
-gem 'capistrano-rails', '~> 1.1.1'
+ruby '2.2.2'
 
 # Add this if you're using rbenv
-gem 'capistrano-rbenv', github: "capistrano/rbenv"
+# gem 'capistrano-rbenv', github: "capistrano/rbenv"
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
 gem 'rails-api'
+
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
-gem 'mysql2'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -37,33 +32,45 @@ gem 'selenium-webdriver'
 gem 'poltergeist'
 gem 'concurrent-ruby'
 gem 'will_paginate-bootstrap'
-gem 'sidekiq'
-gem 'sidekiq_monitor'
 gem 'sinatra'
+gem 'whenever', :require => false
 
-# Add this if you're using rvm
-# gem 'capistrano-rvm', github: "capistrano/rvm"
-#
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'redis'
+gem 'sidekiq'
+gem 'unicorn'
+gem 'puma'
+gem 'pg'
+gem 'sweetalert-rails'
+gem 'rails-assets-tether'
+gem 'bootstrap', '~> 4.0.0.alpha5'
 
-# Use Unicorn as the app server
-# gem 'unicorn'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+group :development do
+end
 
 group :development, :test do
+  gem "letter_opener"
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'pry'
   gem "better_errors"
   gem "binding_of_caller"
 
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
 
+
+
+
+  # Access an IRB console on exception pages or by using <%= console %> in views
+  gem 'web-console'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'yard'
+
+  gem 'capistrano-rvm', require: false
+  gem 'rvm-capistrano', require: false
+  gem 'capistrano-sidekiq', :require => false
+  gem 'capistrano-unicorn', :require => false
+  gem 'capistrano-rails', :require => false
+  gem 'capistrano', "~> 2.15.0"
 end
 

@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20170816135743) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "connections", force: :cascade do |t|
     t.integer  "station_id"
     t.integer  "connected_station_id"
@@ -43,14 +46,14 @@ ActiveRecord::Schema.define(version: 20170816135743) do
     t.text     "result"
   end
 
-  add_index "sidekiq_jobs", ["class_name"], name: "index_sidekiq_jobs_on_class_name"
-  add_index "sidekiq_jobs", ["enqueued_at"], name: "index_sidekiq_jobs_on_enqueued_at"
-  add_index "sidekiq_jobs", ["finished_at"], name: "index_sidekiq_jobs_on_finished_at"
-  add_index "sidekiq_jobs", ["jid"], name: "index_sidekiq_jobs_on_jid"
-  add_index "sidekiq_jobs", ["queue"], name: "index_sidekiq_jobs_on_queue"
-  add_index "sidekiq_jobs", ["retry"], name: "index_sidekiq_jobs_on_retry"
-  add_index "sidekiq_jobs", ["started_at"], name: "index_sidekiq_jobs_on_started_at"
-  add_index "sidekiq_jobs", ["status"], name: "index_sidekiq_jobs_on_status"
+  add_index "sidekiq_jobs", ["class_name"], name: "index_sidekiq_jobs_on_class_name", using: :btree
+  add_index "sidekiq_jobs", ["enqueued_at"], name: "index_sidekiq_jobs_on_enqueued_at", using: :btree
+  add_index "sidekiq_jobs", ["finished_at"], name: "index_sidekiq_jobs_on_finished_at", using: :btree
+  add_index "sidekiq_jobs", ["jid"], name: "index_sidekiq_jobs_on_jid", using: :btree
+  add_index "sidekiq_jobs", ["queue"], name: "index_sidekiq_jobs_on_queue", using: :btree
+  add_index "sidekiq_jobs", ["retry"], name: "index_sidekiq_jobs_on_retry", using: :btree
+  add_index "sidekiq_jobs", ["started_at"], name: "index_sidekiq_jobs_on_started_at", using: :btree
+  add_index "sidekiq_jobs", ["status"], name: "index_sidekiq_jobs_on_status", using: :btree
 
   create_table "stations", force: :cascade do |t|
     t.string   "name"

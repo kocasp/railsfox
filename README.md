@@ -5,6 +5,7 @@
 -- random webpage connection crawl
 * capybara timeout error catching from crowler
 * dont remove old courses before saving new ones
+* set expected daily courses amount on particular connection
 *!! create a updated_at and updated_to fields in connection to allow to start from last day after update is distrupted (requires crawler refactoring)
 Apparently there is a problem running Capybara Poltergeist crawl simultaneusly via sidekiq. Various errors appear. Crawl performs well when running separately on foreground via ConnectionWorker.new(no_days, connection_id) but parallel sidekiq jobs throws:
 

@@ -11,11 +11,11 @@ class Crowler
 	end
 
 	def perform_crawl
-		p "setup ..."
+		# p "setup ..."
 		setup
-		p "enter connection page ..."
-		enter_connection_page
-		p "iterate courses ..."
+		# p "enter connection page ..."
+		return false unless enter_connection_page_correctly
+		# p "iterate courses ..."
 		iterate_courses
 		@results
 	end
@@ -29,33 +29,48 @@ class Crowler
 		@start_url = "http://www.intercity.pl/pl/"
 	end
 
-	def enter_connection_page
-		p "visit page ..."
+	def enter_connection_page_correctly
+		# p "visit page ..."
 		@browser.visit @start_url
-		p "fill in page ..."
+		# p "fill in page ..."
 		@browser.fill_in('seek[stname][0]', :with => @start_station_name)
 		@browser.find("a[title='#{@start_station_name}']").click
 		@browser.fill_in('seek[stname][1]', :with => @end_station_name)
 		@browser.find("a[title='#{@end_station_name}']").click
+
+		@browser.fill_in('seek[time]', :with => '00:00')
+		@browser.first(".ui-timepicker-list li").click
+
 		travel_date = @date.strftime
 		puts "performing crawl for #{travel_date}"
 		@browser.fill_in('seek[date]', :with => travel_date)
 		@browser.click_on 'Szukaj'
-		sleep(7)
+
 		@courses_found = @browser.all(".train_main_content_box li", :visible=>false).count
+
+		counter = 0
+		while counter < 20
+			puts "sleep...(#{@courses_found}/20)"
+			break if  @courses_found > 20
+			sleep(2)
+			@courses_found = @browser.all(".train_main_content_box li", :visible=>false).count
+			counter += 1
+		end
 
 		# binding.pry if @courses_found == 0
 
 		puts "	znaleziono #{@courses_found} połączeń PKP"
+
+		return @courses_found > 0 ? true : false
 	end
 
 	def iterate_courses
 		@browser.all(".train_main_content_box li", :visible=>false).each do |c|
 			#check if connection is INTERCITY PREMIUM. premium connections have orange border caused by 'ramka_eip' class
-			puts "EIP course: #{c.first(".ramka_eip").present?}"
+			# puts "EIP course: #{c.first(".ramka_eip").present?}"
 			unless c.first(".ramka_eip").nil?
 				route = c.first("div", :visible=>false)[:id]
-				puts " processing EIP #{route} ..."
+				# puts " processing EIP #{route} ..."
 				departure_time = c.first(".godziny.do_prawej", :visible=>false)
 				departure_date = c.all(".daty.do_lewej", :visible=>false).last
 				arrival_time = c.first(".godziny.do_lewej", :visible=>false)
@@ -64,30 +79,30 @@ class Crowler
 
 				#check if there is an hour and price field in connection div
 				unless departure_time.nil? || price.nil?
-					puts "	---------------------------------------"
-					puts "	processing EIP #{route} ..."
+					# puts "	---------------------------------------"
+					# puts "	processing EIP #{route} ..."
 					puts "	departure time: #{departure_time.text}"
-					puts "	arrival time: #{arrival_time.text}"
-					puts "	price: #{price.text}"
+					# puts "	arrival time: #{arrival_time.text}"
+					# puts "	price: #{price.text}"
 
 					#detect if click needed
 					if price.text == "Sprawdź cenę od w klasie 2"
-						puts "	click needed!"
-						puts "	running JS: $('##{route} .cena_klasa_2').click()"
+						# puts "	click needed!"
+						# puts "	running JS: $('##{route} .cena_klasa_2').click()"
 
 						#capybara click couldnt help so JS click is triggered
 						@browser.execute_script("$('##{route} .cena_klasa_2').click()")
 						while price.text == "Sprawdź cenę od w klasie 2"
 							@browser.execute_script("$('##{route} .cena_klasa_2').click()")
-							sleep(2)
+							sleep(1)
 						end
 
 						while price.text.empty? do
 							#binding.pry
 							price = c.first(".cena_klasa_2", :visible=>false)
-							sleep(2) if price.text.empty?
+							sleep(1) if price.text.empty?
 						end
-						puts "	price: #{price.text}"
+						# puts "	price: #{price.text}"
 					end
 
 					dt = Time.parse(departure_time.text)
@@ -106,8 +121,9 @@ class Crowler
 
 	def parse_price(price)
 		return nil if price.text == "Brak możliwości sprawdzenia"
+		raise "Czas serwisowy! Pamiętaj o przerwie technologicznej w systemie internetowej sprzedaży w godzinach 23:30 - 1:00 " if price.text == "Czas serwisowy"
 		ticket_price = price.text.split(/\W+/)[5].to_f
-		raise "price suspiciously low" if ticket_price < 10
+		raise "price suspiciously low. price.text: #{price.text}, ticket_price: #{ticket_price}" if ticket_price < 10
 		ticket_price
 	end
 

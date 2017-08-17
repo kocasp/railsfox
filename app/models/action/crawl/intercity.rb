@@ -26,9 +26,14 @@ module Action
 
 		def load_new_courses
 			(@start_date..@end_date).each do |date|
-				crowler = ::Crowler.new(date, @connection)
-				p "performing Crawl from lib/crowler.rb"
-				results = crowler.perform_crawl
+
+				results = false
+				while results == false
+					crowler = ::Crowler.new(date, @connection)
+					results = crowler.perform_crawl
+					puts "repeating day crawl..." unless results
+				end
+
 				@new_courses.concat results
 			end
 		end
