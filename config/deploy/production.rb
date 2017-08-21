@@ -67,8 +67,8 @@ set :repository, 'git@bitbucket.org:kocasp/pkpfox.git'
 set :repository_cache, 'git_cache'
 set :ssh_options, { :forward_agent => true }
 
-set :unicorn_pid, '/home/deploy/apps/literki/shared/pids/unicorn.pid'
-set :sidekiq_config, '/home/deploy/apps/literki/shared/config/sidekiq.yml'
+set :unicorn_pid, '/home/deploy/apps/pkpfox/shared/pids/unicorn.pid'
+set :sidekiq_config, '/home/deploy/apps/pkpfox/shared/config/sidekiq.yml'
 
 default_run_options[:pty] = true
 # before 'deploy:update_code', 'thinking_sphinx:stop'
