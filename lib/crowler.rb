@@ -11,11 +11,8 @@ class Crowler
 	end
 
 	def perform_crawl
-		# p "setup ..."
 		setup
-		# p "enter connection page ..."
 		return false unless enter_connection_page_correctly
-		# p "iterate courses ..."
 		iterate_courses
 		@results
 	end
@@ -30,9 +27,9 @@ class Crowler
 	end
 
 	def enter_connection_page_correctly
-		# p "visit page ..."
+
 		@browser.visit @start_url
-		# p "fill in page ..."
+
 		@browser.fill_in('seek[stname][0]', :with => @start_station_name)
 		@browser.find("a[title='#{@start_station_name}']").click
 		@browser.fill_in('seek[stname][1]', :with => @end_station_name)
@@ -57,20 +54,30 @@ class Crowler
 			counter += 1
 		end
 
-		# binding.pry if @courses_found == 0
-
 		puts "	znaleziono #{@courses_found} połączeń PKP"
 
 		return @courses_found > 0 ? true : false
 	end
 
 	def iterate_courses
+		# click all undisplayed prices simultaneusly
+		@browser.all(".train_main_content_box li", :visible=>false).each do |c2|
+			unless c2.first(".ramka_eip").nil?
+				route = c2.first("div", :visible=>false)[:id]
+				departure_time = c2.first(".godziny.do_prawej", :visible=>false)
+				price = c2.first(".cena_klasa_2", :visible=>false)
+				if price.text == "Sprawdź cenę od w klasie 2"
+					@browser.execute_script("$('##{route} .cena_klasa_2').click()")
+				end
+			end
+		end
+
 		@browser.all(".train_main_content_box li", :visible=>false).each do |c|
 			#check if connection is INTERCITY PREMIUM. premium connections have orange border caused by 'ramka_eip' class
-			# puts "EIP course: #{c.first(".ramka_eip").present?}"
+
 			unless c.first(".ramka_eip").nil?
 				route = c.first("div", :visible=>false)[:id]
-				# puts " processing EIP #{route} ..."
+
 				departure_time = c.first(".godziny.do_prawej", :visible=>false)
 				departure_date = c.all(".daty.do_lewej", :visible=>false).last
 				arrival_time = c.first(".godziny.do_lewej", :visible=>false)
@@ -79,16 +86,10 @@ class Crowler
 
 				#check if there is an hour and price field in connection div
 				unless departure_time.nil? || price.nil?
-					# puts "	---------------------------------------"
-					# puts "	processing EIP #{route} ..."
 					puts "	departure time: #{departure_time.text}"
-					# puts "	arrival time: #{arrival_time.text}"
-					# puts "	price: #{price.text}"
 
 					#detect if click needed
-					if price.text == "Sprawdź cenę od w klasie 2"
-						# puts "	click needed!"
-						# puts "	running JS: $('##{route} .cena_klasa_2').click()"
+					if price.text == "Sprawdź cenę od w klasie 2" || price.text == ""
 
 						#capybara click couldnt help so JS click is triggered
 						@browser.execute_script("$('##{route} .cena_klasa_2').click()")
@@ -98,11 +99,9 @@ class Crowler
 						end
 
 						while price.text.empty? do
-							#binding.pry
 							price = c.first(".cena_klasa_2", :visible=>false)
 							sleep(1) if price.text.empty?
 						end
-						# puts "	price: #{price.text}"
 					end
 
 					dt = Time.parse(departure_time.text)
