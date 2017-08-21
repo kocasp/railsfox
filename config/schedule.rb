@@ -18,6 +18,7 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+set :path, "/home/deploy/apps/pkpfox/current/"
 every 1.day, :at => '4:30 am' do
   rake "update_courses"
 end
